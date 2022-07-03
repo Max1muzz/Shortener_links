@@ -6,6 +6,9 @@
             <b>Insert link:</b>
             <input class="form-control" v-model="link" type="url">
         </div>
+        <div v-if="error_url" class="mt-2 w-25">
+            <p class="text-danger">This is not correct URL</p>
+        </div>
         <div class="mt-3">
             <input :disabled="!isDisabled" @click.prevent="shortLink" class="btn btn-primary" type="submit" value="Shorten">
         </div>
@@ -21,7 +24,8 @@ export default {
     data() {
         return {
             link: null,
-            short: null
+            short: null,
+            error_url: null
         }
     },
     methods: {
@@ -30,6 +34,11 @@ export default {
             .then(res => {
                 this.short = res.data
                 this.link = null
+                this.error_url = false
+            })
+            .catch(error => {
+                 this.error_url = true
+
             })
         }
     },
